@@ -6,31 +6,26 @@
 </head>
 <body>
     <script>
-        function convert(converter, temperature) {
-            return converter(temperature);
-        }
-
         function toCentigrade(degFahren) {
             var degCent = 5 / 9 * (degFahren - 32);
 
-            return degCent;
+            document.write(degFahren + " Fahrenheit is " +
+                           degCent + " Celsius.");
         }
 
         function toFahrenheit(degCent) {
             var degFahren = 9 / 5 * degCent + 32;
 
-            return degFahren;
+            document.write(degCent + " Celsius is " +
+                           degFahren + " Fahrenheit.<br/>");
         }
 
-        var degCent = 23;
-        var degFahren = 75;
+        function convert(converter, temperature) {
+            return converter(temperature);
+        }
 
-        var resultFahren = convert(toFahrenheit, degCent);
-        var resultCent = convert(toCentigrade, degFahren);
-
-        document.write(degCent + " Celsius is " + resultFahren + " Fahrenheit.<br/>");
-        document.write(degFahren + " Fahrenheit is " + resultCent + " Celsius.");
-
+        var resultFahren = convert(toFahrenheit, 23);
+        var resultCent = convert(toCentigrade, 75);
     </script>
 </body>
 </html>
