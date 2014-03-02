@@ -10,7 +10,7 @@
             var degCent = 5 / 9 * (degFahren - 32);
 
             document.write(degFahren + " Fahrenheit is " +
-                           degCent + " Celsius.");
+                           degCent + " Celsius.<br/>");
         }
 
         function toFahrenheit(degCent) {
@@ -21,11 +21,11 @@
         }
 
         function convert(converter, temperature) {
-            return converter(temperature);
+            converter(temperature);
         }
 
-        var resultFahren = convert(toFahrenheit, 23);
-        var resultCent = convert(toCentigrade, 75);
+        convert(toFahrenheit, 23);
+        convert(toCentigrade, 75);
     </script>
 </body>
 </html>
