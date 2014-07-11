@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Drag and Drop</title>
+    <style>
+        [data-drop-target] {
+            height: 400px;
+            width: 200px;
+            float: left;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+        }
+
+        .navy {
+            background-color: navy;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .over {
+            border: 2px dashed #000;
+        }
+    </style>
+</head>
+<body>
+    <div data-drop-target="true">
+        <div id="box1" draggable="true" class="box navy"></div>
+        <div id="box2" draggable="true" class="box red"></div>
+    </div>
+    <div data-drop-target="true"></div>
+
+    <script>
+        function handleDragStart(e) {
+            e.dataTransfer.setData("text", e.target.id);
+        }
+
+        function handleDragEnterLeave(e) {
+            if (e.type == "dragenter") {
+                this.className = "over";
+            } else {
+                this.className = "";
+            }
+        }
+
+        function handleOverDrop(e) {
+            e.preventDefault();
+
+            if (e.type == "drop") {
+                var id = e.dataTransfer.getData("text");
+                var node = document.getElementById(id);
+
+                e.preventDefault();
+
+                if (node.parentNode == this) {
+                    return;
+                }
+
+                node.parentNode.removeChild(node);
+
+                this.appendChild(node);
+                this.className = "";
+            }
+        }
+
+        var draggable = document.querySelectorAll("[draggable]");
+        var targets = document.querySelectorAll("[data-drop-target]");
+
+        for (var i = 0; i < draggable.length; i++) {
+            draggable[i].addEventListener("dragstart", handleDragStart);
+        }
+
+        for (i = 0; i < targets.length; i++) {
+            targets[i].addEventListener("dragover", handleOverDrop);
+            targets[i].addEventListener("drop", handleOverDrop);
+            targets[i].addEventListener("dragenter", handleDragEnterLeave);
+            targets[i].addEventListener("dragleave", handleDragEnterLeave);
+        }
+    </script>
+</body>
+</html>

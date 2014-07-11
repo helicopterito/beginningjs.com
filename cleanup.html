@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Drag and Drop</title>
+    <style>
+        .box {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+        }
+
+        .navy {
+            background-color: navy;
+        }
+
+        .red {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div data-draggable="true" class="box navy"></div>
+    <div data-draggable="true" class="box red"></div>
+
+    <script src="ch10/event-utility.js"></script>
+    <script>
+        var dragTracker = {
+            el: null,
+            dragging: false,
+            offsetX: 0,
+            offsetY: 0,
+            init: function (element, offsetX, offsetY) {
+                this.el = element;
+                this.dragging = true;
+                this.offsetX = element.offsetLeft - offsetX;
+                this.offsetY = element.offsetTop - offsetY;
+            },
+            moveTo: function (x, y) {
+                if (this.dragging) {
+                    this.el.style.left = this.offsetX + x + "px";
+                    this.el.style.top = this.offsetY + y + "px";
+                }
+            },
+            stop: function () {
+                this.dragging = false;
+                this.el = null;
+            },
+            mouseHandler: function (e) {
+                var target = evt.getTarget(e);
+                var type = e.type;
+                var draggable = target.getAttribute("data-draggable");
+                var x = event.clientX + document.body.scrollLeft;
+                var y = event.clientY + document.body.scrollTop;
+
+                switch (type) {
+                    case "mousedown":
+                        if (draggable) {
+                            dragTracker.init(target, x, y);
+                        }
+                        break;
+                    case "mouseup":
+                        dragTracker.stop();
+                        break;
+                    case "mousemove":
+                        dragTracker.moveTo(x, y);
+                        break;
+                }
+            }
+        };
+
+        evt.addListener(document, "mousedown", dragTracker.mouseHandler);
+        evt.addListener(document, "mouseup", dragTracker.mouseHandler);
+        evt.addListener(document, "mousemove", dragTracker.mouseHandler);
+    </script>
+</body>
+</html>
