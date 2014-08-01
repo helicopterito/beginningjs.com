@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 5, Figure 2</title>
+</head>
+<body>
+    <script>
+        var numbers = [1, 2, 3, 4, 5];
+
+        function isLessThan3(value, index, array) {
+            var returnValue = false;
+
+            if (value < 3) {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
+
+        if (numbers.some(isLessThan3)) {
+            var result = numbers.filter(isLessThan3);
+            alert("These numbers are less than 3: " + result);
+        }
+
+    </script>
+</body>
+</html>
