@@ -2,7 +2,7 @@
 
 <html lang="en">
 <head>
-    <title>Chapter 10: Example 21</title>
+    <title>Chapter 12: Example 1</title>
     <style>
         [data-drop-target] {
             height: 400px;
@@ -39,10 +39,12 @@
 
     <script>
         function handleDragStart(e) {
-            e.dataTransfer.setData("tex" +
-                "" +
-                "" +
-                "t", this.id);
+            var data = {
+                elementId: this.id,
+                message: "You moved an element!"
+            };
+
+            e.dataTransfer.setData("text", JSON.stringify(data));
         }
 
         function handleDragEnterLeave(e) {
@@ -60,8 +62,10 @@
                 return;
             }
 
-            var draggedId = e.dataTransfer.getData("text");
-            var draggedEl = document.getElementById(draggedId);
+            var json = e.dataTransfer.getData("text");
+            var data = JSON.parse(json);
+
+            var draggedEl = document.getElementById(data.elementId);
 
             if (draggedEl.parentNode == this) {
                 this.className = "";
@@ -72,6 +76,8 @@
 
             this.appendChild(draggedEl);
             this.className = "";
+
+            alert(data.message);
         }
 
         var draggable = document.querySelectorAll("[draggable]");

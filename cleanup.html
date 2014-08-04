@@ -2,76 +2,32 @@
 
 <html lang="en">
 <head>
-    <title>Drag and Drop</title>
-    <style>
-        .box {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-        }
-
-        .navy {
-            background-color: navy;
-        }
-
-        .red {
-            background-color: red;
-        }
-    </style>
+    <title>Chapter 11: Example 9</title>
 </head>
 <body>
-    <div data-draggable="true" class="box navy"></div>
-    <div data-draggable="true" class="box red"></div>
+    <div>Local Time is <span id="spanLocalTime"></span></div>
+    <div id="divCityTime"></div>
 
-    <script src="ch10/event-utility.js"></script>
+    <form name="form1">
+        <input type="text" name="num1" id="num1"/>
+        <input type="text" name="num2" id="num2" />
+        <output name="result" for="num1 num2"></output>
+        <input type="button" onclick="doThis()"/>
+    </form>
+
+
     <script>
-        var dragTracker = {
-            el: null,
-            dragging: false,
-            offsetX: 0,
-            offsetY: 0,
-            init: function (element, offsetX, offsetY) {
-                this.el = element;
-                this.dragging = true;
-                this.offsetX = element.offsetLeft - offsetX;
-                this.offsetY = element.offsetTop - offsetY;
-            },
-            moveTo: function (x, y) {
-                if (this.dragging) {
-                    this.el.style.left = this.offsetX + x + "px";
-                    this.el.style.top = this.offsetY + y + "px";
-                }
-            },
-            stop: function () {
-                this.dragging = false;
-                this.el = null;
-            },
-            mouseHandler: function (e) {
-                var target = evt.getTarget(e);
-                var type = e.type;
-                var draggable = target.getAttribute("data-draggable");
-                var x = event.clientX + document.body.scrollLeft;
-                var y = event.clientY + document.body.scrollTop;
+        var myForm = document.form1;
 
-                switch (type) {
-                    case "mousedown":
-                        if (draggable) {
-                            dragTracker.init(target, x, y);
-                        }
-                        break;
-                    case "mouseup":
-                        dragTracker.stop();
-                        break;
-                    case "mousemove":
-                        dragTracker.moveTo(x, y);
-                        break;
-                }
-            }
-        };
+        function doThis() {
+            var num1 = myForm.num1.value;
+            var num2 = myForm.num2.value;
 
-        evt.addListener(document, "mousedown", dragTracker.mouseHandler);
-        evt.addListener(document, "mouseup", dragTracker.mouseHandler);
-        evt.addListener(document, "mousemove", dragTracker.mouseHandler);
+            myForm.result.value = num1 + num2;
+
+        }
+
+        
     </script>
 </body>
 </html>
