@@ -1,8 +1,7 @@
 ﻿<!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <title>Chapter 14: Example 1</title>
+    <title>Chapter 14: Example 2</title>
     <style>
         .fieldname {
             text-align: right;
@@ -10,6 +9,10 @@
 
         .submit {
             text-align: right;
+        }
+
+        #hiddenFrame {
+            display: none;
         }
     </style>
 </head>
@@ -45,7 +48,7 @@
                 <td>
                     <input type="text" id="password" />
                 </td>
-                <td />
+                <td></td>
             </tr>
             <tr>
                 <td class="fieldname">
@@ -54,17 +57,17 @@
                 <td>
                     <input type="text" id="password2" />
                 </td>
-                <td />
+                <td></td>
             </tr>
             <tr>
                 <td colspan="2" class="submit">
                     <input type="submit" value="Submit" />
                 </td>
-                <td />
+                <td></td>
             </tr>
         </table>
     </form>
-    <script src="httprequest.js"></script>
+    <iframe src="about:blank" id="hiddenFrame" name="hiddenFrame"></iframe>
     <script>
         function checkUsername(e) {
             e.preventDefault();
@@ -76,10 +79,9 @@
                 return;
             }
 
-            var url = "ch14_formvalidator.php?username=" + userValue;
+            var url = "ch14_iframevalidator.php?username=" + userValue;
 
-            var request = new HttpRequest(url, handleResponse);
-            request.send();
+            frames["hiddenFrame"].location = url;
         }
 
         function checkEmail(e) {
@@ -92,10 +94,9 @@
                 return;
             }
 
-            var url = "ch14_formvalidator.php?email=" + emailValue;
+            var url = "ch14_iframevalidator.php?email=" + emailValue;
 
-            var request = new HttpRequest(url, handleResponse);
-            request.send();
+            frames["hiddenFrame"].location = url;
         }
 
         function handleResponse(responseText) {
@@ -112,5 +113,4 @@
         document.getElementById("emailAvailability").addEventListener("click", checkEmail);
     </script>
 </body>
-
 </html>
