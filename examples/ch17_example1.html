@@ -4,6 +4,15 @@
 <head>
     <title>Chapter 17: Example 1</title>
     <style>
+        .box {
+            width: 100px;
+            height: 100px;
+        }
+
+        .red {
+            background-color: red;
+        }
+
         .drop-zone {
             width: 300px;
             padding: 20px;
@@ -12,11 +21,24 @@
     </style>
 </head>
 <body>
-    <div id="test" draggable="true">Here is some text to select and drag.</div>
+    <div id="test" draggable="true" class="box red"></div>
     <div id="dropZone" class="drop-zone">Drop Zone!</div>
     <div id="dropStatus"></div>
-
+    <script type="text/javascript" src="dom-drag.js"></script>
     <script>
+        var draggableEls = document.querySelectorAll("[draggable='true']");
+        var dropZone = document.getElementById("dropZone");
+        var dropStatus = document.getElementById("dropStatus");
+
+
+        for (var ii = 0; ii < draggableEls.length; ii++) {
+            draggableEls[ii].onselectstart = function () {
+                document.getElementById("test").dragDrop();
+                //dropStatus.innerHTML = "asdf";
+            };
+        }
+
+
         function dragDropHandler(event) {
             event = window.event;
             event.returnValue = false;
@@ -28,8 +50,6 @@
             }
         }
 
-        var dropZone = document.getElementById("dropZone");
-        var dropStatus = document.getElementById("dropStatus");
 
         dropZone.ondragover = dragDropHandler;
         dropZone.ondrop = dragDropHandler;
