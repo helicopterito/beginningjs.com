@@ -17,10 +17,10 @@
     <div id="dropStatus"></div>
 
     <script>
-        function dragDropHandler(e) {
-            e.returnValue = false;
+        function dragDropHandler(event) {
+            event.returnValue = false;
 
-            if (e.type == "dragover") {
+            if (event.type == "dragover") {
                 dropStatus.innerHTML = "You're dragging over the drop zone!";
             } else {
                 dropStatus.innerHTML = "You dropped something!";
