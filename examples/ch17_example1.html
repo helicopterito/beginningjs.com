@@ -18,6 +18,7 @@
 
     <script>
         function dragDropHandler(event) {
+            event = window.event;
             event.returnValue = false;
 
             if (event.type == "dragover") {
