@@ -19,6 +19,13 @@
             border: 2px dashed #000;
         }
     </style>
+    <script src="modernizr.custom.30463.js"></script>
+    <script>
+        Modernizr.load({
+            test: Modernizr.draganddrop,
+            nope: "legacydragdrop.js"
+        });
+    </script>
 </head>
 <body>
     <div id="test" draggable="true" class="box red"></div>
