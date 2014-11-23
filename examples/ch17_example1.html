@@ -4,62 +4,105 @@
 <head>
     <title>Chapter 17: Example 1</title>
     <style>
+        [data-drop-target] {
+            height: 400px;
+            width: 200px;
+            margin: 2px;
+            background-color: gainsboro;
+            float: left;
+        }
+
+        .drag-enter {
+            border: 2px dashed #000;
+        }
+
         .box {
-            width: 100px;
-            height: 100px;
+            width: 200px;
+            height: 200px;
+        }
+
+        .navy {
+            background-color: navy;
         }
 
         .red {
             background-color: red;
         }
-
-        .drop-zone {
-            width: 300px;
-            padding: 20px;
-            border: 2px dashed #000;
-        }
     </style>
-    <script src="modernizr.custom.30463.js"></script>
+    <script src="modernizr.min.js"></script>
     <script>
+        Modernizr.addTest('draggable', function () {
+            var span = document.createElement("span");
+
+            return typeof span.draggable != "undefined";
+        });
+
         Modernizr.load({
-            test: Modernizr.draganddrop,
-            nope: "legacydragdrop.js"
+            test: Modernizr.draggable,
+            nope: "draggable-polyfill.js"
+        });
+
+        Modernizr.load({
+            test: document.addEventListener,
+            nope: "event-polyfill.js"
         });
     </script>
 </head>
 <body>
-    <div id="test" draggable="true" class="box red"></div>
-    <div id="dropZone" class="drop-zone">Drop Zone!</div>
-    <div id="dropStatus"></div>
-    <script type="text/javascript" src="dom-drag.js"></script>
+    <div data-drop-target="true">
+        <div id="box1" draggable="true" class="box navy"></div>
+        <div id="box2" draggable="true" class="box red"></div>
+    </div>
+    <div data-drop-target="true"></div>
+
     <script>
-        var draggableEls = document.querySelectorAll("[draggable='true']");
-        var dropZone = document.getElementById("dropZone");
-        var dropStatus = document.getElementById("dropStatus");
-
-
-        for (var ii = 0; ii < draggableEls.length; ii++) {
-            draggableEls[ii].onselectstart = function () {
-                document.getElementById("test").dragDrop();
-                //dropStatus.innerHTML = "asdf";
-            };
+        function handleDragStart(e) {
+            e.dataTransfer.setData("text", this.id);
         }
 
-
-        function dragDropHandler(event) {
-            event = window.event;
-            event.returnValue = false;
-
-            if (event.type == "dragover") {
-                dropStatus.innerHTML = "You're dragging over the drop zone!";
+        function handleDragEnterLeave(e) {
+            if (e.type == "dragenter") {
+                this.className = "drag-enter";
             } else {
-                dropStatus.innerHTML = "You dropped something!";
+                this.className = "";
             }
         }
 
+        function handleOverDrop(e) {
+            e.preventDefault();
 
-        dropZone.ondragover = dragDropHandler;
-        dropZone.ondrop = dragDropHandler;
+            if (e.type != "drop") {
+                return;
+            }
+
+            var draggedId = e.dataTransfer.getData("text");
+            var draggedEl = document.getElementById(draggedId);
+
+            if (draggedEl.parentNode == this) {
+                this.className = "";
+                return;
+            }
+
+            draggedEl.parentNode.removeChild(draggedEl);
+
+            this.appendChild(draggedEl);
+            this.className = "";
+        }
+
+        var draggable = document.querySelectorAll("[draggable]");
+        var targets = document.querySelectorAll("[data-drop-target]");
+
+        for (var i = 0; i < draggable.length; i++) {
+            draggable[i].addEventListener("dragstart", handleDragStart);
+        }
+
+        for (i = 0; i < targets.length; i++) {
+            targets[i].addEventListener("dragover", handleOverDrop);
+            targets[i].addEventListener("drop", handleOverDrop);
+            targets[i].addEventListener("dragenter", handleDragEnterLeave);
+            targets[i].addEventListener("dragleave", handleDragEnterLeave);
+        }
     </script>
+
 </body>
 </html>

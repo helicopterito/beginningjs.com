@@ -39,10 +39,7 @@
 
     <script>
         function handleDragStart(e) {
-            e.dataTransfer.setData("tex" +
-                "" +
-                "" +
-                "t", this.id);
+            e.dataTransfer.setData("text", this.id);
         }
 
         function handleDragEnterLeave(e) {
