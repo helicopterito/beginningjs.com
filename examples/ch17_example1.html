@@ -30,25 +30,6 @@
         }
     </style>
     <script src="modernizr.min.js"></script>
-    <script>
-        Modernizr.addTest('draggable', function () {
-            var span = document.createElement("span");
-
-            return typeof span.draggable != "undefined";
-        });
-
-        Modernizr.load([{
-            test: Modernizr.draggable,
-            nope: "draggable-polyfill.js"
-        },
-        {
-            test: document.addEventListener,
-            nope: "event-polyfill.js",
-            complete: init
-        }]);
-
-        Modernizr.load();
-    </script>
 </head>
 <body>
     <div data-drop-target="true">
@@ -107,6 +88,22 @@
                 targets[i].addEventListener("dragleave", handleDragEnterLeave);
             }
         }
+
+        Modernizr.addTest('draggable', function () {
+            var span = document.createElement("span");
+
+            return typeof span.draggable != "undefined";
+        });
+
+        Modernizr.load([{
+            test: Modernizr.draggable,
+            nope: "draggable-polyfill.js"
+        },
+        {
+            test: document.addEventListener,
+            nope: "event-polyfill.js",
+            complete: init
+        }]);
     </script>
 
 </body>
