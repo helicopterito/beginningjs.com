@@ -1,5 +1,5 @@
 ﻿<?php
-header("Content-Type: text/plain");
+header("Content-Type: application/json");
 header("Cache-Control: no-cache");
 
 if (!isset($_GET["username"]) && !isset( $_GET["email"])) {
