@@ -2,7 +2,7 @@
 
 <html lang="en">
 <head>
-    <title>Chapter 16: Example 1</title>
+    <title>Chapter 17: Example 6</title>
     <style>
         .tabStrip {
             background-color: #E4E2D5;
@@ -10,11 +10,11 @@
             height: 22px;
         }
 
-        .tabStrip div {
-            float: left;
-            font: 14px arial;
-            cursor: pointer;
-        }
+            .tabStrip div {
+                float: left;
+                font: 14px arial;
+                cursor: pointer;
+            }
 
         .tabStrip-tab {
             padding: 3px;
@@ -32,6 +32,7 @@
             padding: 2px;
         }
     </style>
+
 </head>
 <body>
     <div class="tabStrip">
@@ -40,10 +41,11 @@
         <div data-tab-number="3" class="tabStrip-tab">Tab 3</div>
     </div>
     <div id="descContainer"></div>
-    <script src="jquery-2.1.1.min.js"></script>
+
+    <script src="mootools-core-1.5.1-compressed.js"></script>
     <script>
         function handleEvent(e) {
-            var target = $(e.target);
+            var target = e.target;
             var type = e.type;
 
             if (type == "mouseover" || type == "mouseout") {
@@ -51,7 +53,7 @@
             } else if (type == "click") {
                 target.addClass("tabStrip-tab-click");
 
-                var num = target.attr("data-tab-number");
+                var num = target.getAttribute("data-tab-number");
                 showDescription(num);
             }
         }
@@ -59,10 +61,14 @@
         function showDescription(num) {
             var text = "Description for Tab " + num;
 
-            $("#descContainer").text(text);
+            $("descContainer").set("html", text);
         }
 
-        $(".tabStrip > div").on("mouseover mouseout click", handleEvent);
+        $$(".tabStrip > div").addEvents({
+            mouseover: handleEvent,
+            mouseout: handleEvent,
+            click: handleEvent
+        });
     </script>
 </body>
 </html>
