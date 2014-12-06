@@ -4,10 +4,31 @@
 <head>
     <title>Chapter 15: Example 1</title>
 </head>
-<body>
-    <video>
-        <source src="bbb.mp4" />
-        <a href="bbb.mp4">Download the video.</a>
-    </video>
-</body>
+    <body>
+        <div>
+            <button id="playbackController">Play</button>
+        </div>
+        <video id="bbbVideo">
+            <source src="bbb.mp4" />
+            <source src="bbb.webm" />
+        </video>
+    
+        <script>
+            function handlePlayback(e) {
+                var target = e.target;
+                var video = document.getElementById("bbbVideo");
+
+                if (target.innerHTML == "Play") {
+                    video.play();
+                    target.innerHTML = "Pause";
+                } else {
+                    video.pause();
+                    target.innerHTML = "Play";
+                }
+            }
+
+            document.getElementById("playbackController")
+                    .addEventListener("click", handlePlayback);
+        </script>
+    </body>
 </html>
