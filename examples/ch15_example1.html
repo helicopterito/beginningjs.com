@@ -14,7 +14,7 @@
         </video>
     
         <script>
-            function handlePlayback(e) {
+            function playbackClick(e) {
                 var target = e.target;
                 var video = document.getElementById("bbbVideo");
 
@@ -28,7 +28,7 @@
             }
 
             document.getElementById("playbackController")
-                    .addEventListener("click", handlePlayback);
+                    .addEventListener("click", playbackClick);
         </script>
     </body>
 </html>
