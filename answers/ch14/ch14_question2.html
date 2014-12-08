@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 14: Example 1</title>
+    <style>
+        .fieldname {
+            text-align: right;
+        }
+
+        .submit {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <form name="theForm">
+        <table>
+            <tr>
+                <td class="fieldname">
+                    Username:
+                </td>
+                <td>
+                    <input type="text" id="username" />
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldname">
+                    Email:
+                </td>
+                <td>
+                    <input type="text" id="email" />
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="fieldname">
+                    Password:
+                </td>
+                <td>
+                    <input type="text" id="password" />
+                </td>
+                <td />
+            </tr>
+            <tr>
+                <td class="fieldname">
+                    Verify Password:
+                </td>
+                <td>
+                    <input type="text" id="password2" />
+                </td>
+                <td />
+            </tr>
+            <tr>
+                <td colspan="2" class="submit">
+                    <input id="btnSubmit" type="submit" value="Submit" />
+                </td>
+                <td />
+            </tr>
+        </table>
+    </form>
+    <script src="httprequest.js"></script>
+    <script>
+        function btnSubmitClick(e) {
+            e.preventDefault();
+
+            checkUsername();
+        }
+
+        function checkUsername() {
+            var userValue = document.getElementById("username").value;
+
+            if (!userValue) {
+                alert("Please enter a user name to check!");
+                return;
+            }
+
+            var url = "ch14_formvalidator.php?username=" + userValue;
+
+            var request = new HttpRequest(url, handleUsernameResponse);
+            request.send();
+        }
+
+        function checkEmail() {
+            var emailValue = document.getElementById("email").value;
+
+            if (!emailValue) {
+                alert("Please enter an email address to check!");
+                return;
+            }
+
+            var url = "ch14_formvalidator.php?email=" + emailValue;
+
+            var request = new HttpRequest(url, handleEmailResponse);
+            request.send();
+        }
+
+        function handleUsernameResponse(responseText) {
+            var response = JSON.parse(responseText);
+
+            if (!response.available) {
+                displayErrorMessage(response.searchTerm);
+                return;
+            }
+
+            checkEmail();
+        }
+
+        function handleEmailResponse(responseText) {
+            var response = JSON.parse(responseText);
+
+            if (!response.available) {
+                displayErrorMessage(response.searchTerm);
+                return;
+            }
+
+            document.theForm.submit();
+        }
+
+        function displayErrorMessage(term) {
+            alert("We're sorry, but " + term + " is not available.");
+        }
+
+        document.getElementById("btnSubmit")
+                .addEventListener("click", btnSubmitClick);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 15: Example 3</title>
+</head>
+<body>
+    <div>
+        <button id="playbackController">Play</button>
+        <button id="muteController">Mute</button>
+        <input type="range" id="volumeController" min="0" max="1" step=".1" value="1"/>
+    </div>
+    <video id="bbbVideo">
+        <source src="bbb.mp4" />
+        <source src="bbb.webm" />
+    </video>
+    <div>
+        <input type="range" id="seekController" min="0" step="1" value="0" />
+    </div>
+    <script>
+        function pauseHandler(e) {
+            playButton.innerHTML = "Resume";
+        }
+
+        function playingHandler(e) {
+            playButton.innerHTML = "Pause";
+        }
+
+        function volumechangeHandler(e) {
+            muteButton.innerHTML = video.muted ? "Unmute" : "Mute";
+        }
+
+        function durationchangeHandler(e) {
+            seekSlider.max = video.duration;
+        }
+
+        function timeupdateHandler(e) {
+            seekSlider.value = video.currentTime;
+        }
+
+        function playbackClick(e) {
+            video.paused ? video.play() : video.pause();
+        }
+
+        function muteClick(e) {
+            video.muted = !video.muted;
+        }
+
+        function volumeInput(e) {
+            video.volume = volumeSlider.value;
+        }
+        
+        function seekInput(e) {
+            video.currentTime = seekSlider.value;
+        }
+
+        
+
+        var video = document.getElementById("bbbVideo");
+        var playButton = document.getElementById("playbackController");
+        var muteButton = document.getElementById("muteController");
+        var volumeSlider = document.getElementById("volumeController");
+        var seekSlider = document.getElementById("seekController");
+
+        video.addEventListener("pause", pauseHandler);
+        video.addEventListener("playing", playingHandler);
+        video.addEventListener("volumechange", volumechangeHandler);
+        video.addEventListener("durationchange", durationchangeHandler);
+        video.addEventListener("timeupdate", timeupdateHandler);
+
+
+        playButton.addEventListener("click", playbackClick);
+        muteButton.addEventListener("click", muteClick);
+        volumeSlider.addEventListener("input", volumeInput);
+        seekSlider.addEventListener("input", seekInput);
+
+    </script>
+</body>
+</html>

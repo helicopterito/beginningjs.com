@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 13: Question 2</title>
+</head>
+<body>
+    <script>
+        var ads = [
+            "Buy Product A! You won't be sorry!",
+            "You need Product B! Buy buy buy!",
+            "Don't buy Product A or B! Product C is the only option for you!"
+        ];
+
+        function getRandomNumber(min, max) {
+            return Math.floor((Math.random() * max) + min);
+        }
+
+        var lastAdNumber = localStorage.getItem("lastAdNumber");
+        var nextNumber = getRandomNumber(0, ads.length);
+
+        if (lastAdNumber == null) {
+            lastAdNumber = nextNumber;
+        } else {
+            lastAdNumber = parseInt(lastAdNumber, 10);
+            while (lastAdNumber == nextNumber) {
+                nextNumber = getRandomNumber(0, ads.length);
+            }
+        }
+
+        localStorage.setItem("lastAdNumber", nextNumber);
+
+        document.write(ads[nextNumber]);
+    </script>
+</body>
+</html>

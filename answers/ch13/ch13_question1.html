@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 13: Question 1</title>
+</head>
+<body>
+    <script>
+        var pageViewCount = localStorage.getItem("pageViewCount");
+        var pageFirstVisited = localStorage.getItem("pageFirstVisited");
+        var now = new Date();
+
+        if (pageViewCount == null) {
+            pageViewCount = 0;
+            pageFirstVisited = now.toUTCString();
+        }
+
+        var oneMonth = new Date(pageFirstVisited);
+        oneMonth.setMonth(oneMonth.getMonth() + 1);
+
+        if (now > oneMonth) {
+            pageViewCount = 0;
+            pageFirstVisited = now.toUTCString();
+        }
+
+        pageViewCount = parseInt(pageViewCount, 10) + 1;
+
+        localStorage.setItem("pageViewCount", pageViewCount);
+        localStorage.setItem("pageFirstVisited", pageFirstVisited);
+
+        var output = "You've visited this page " + pageViewCount +
+            " times since " + pageFirstVisited;
+
+        document.write(output);
+    </script>
+</body>
+</html>

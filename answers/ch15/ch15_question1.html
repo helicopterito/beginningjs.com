@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Chapter 15: Example 3</title>
+</head>
+<body>
+    <div>
+        <button id="playbackController">Play</button>
+        <button id="muteController">Mute</button>
+        <input type="range" id="volumeController" min="0" max="1" step=".1" value="1"/>
+    </div>
+    <video id="bbbVideo">
+        <source src="bbb.mp4" />
+        <source src="bbb.webm" />
+    </video>
+
+    <script>
+        function pauseHandler(e) {
+            playButton.innerHTML = "Resume";
+        }
+
+        function playingHandler(e) {
+            playButton.innerHTML = "Pause";
+        }
+
+        function volumechangeHandler(e) {
+            muteButton.innerHTML = video.muted ? "Unmute" : "Mute";
+        }
+
+        function playbackClick(e) {
+            video.paused ? video.play() : video.pause();
+        }
+
+        function muteClick(e) {
+            video.muted = !video.muted;
+        }
+
+        function volumeInput(e) {
+            video.volume = volumeSlider.value;
+        }
+
+        var video = document.getElementById("bbbVideo");
+        var playButton = document.getElementById("playbackController");
+        var muteButton = document.getElementById("muteController");
+        var volumeSlider = document.getElementById("volumeController");
+
+        video.addEventListener("pause", pauseHandler);
+        video.addEventListener("playing", playingHandler);
+        video.addEventListener("volumechange", volumechangeHandler);
+
+        playButton.addEventListener("click", playbackClick);
+        muteButton.addEventListener("click", muteClick);
+        volumeSlider.addEventListener("input", volumeInput);
+    </script>
+</body>
+</html>
