@@ -2,7 +2,7 @@
 
 <html lang="en">
 <head>
-    <title>Chapter 14: Question 2</title>
+    <title>Chapter 17: Question 2</title>
     <style>
         .fieldname {
             text-align: right;
@@ -60,7 +60,7 @@
             </tr>
         </table>
     </form>
-    <script src="ch14_question1.js"></script>
+    <script src="mootools-core-1.5.1-compressed.js"></script>
     <script>
         function btnSubmitClick(e) {
             e.preventDefault();
@@ -69,36 +69,49 @@
         }
 
         function checkUsername() {
-            var userValue = document.getElementById("username").value;
+            var userValue = $("username").value;
 
             if (!userValue) {
                 alert("Please enter a user name to check!");
                 return;
             }
 
-            var url = "ch14_formvalidator.php?username=" + userValue;
+            var options = {
+                url: "ch14_formvalidator.php",
+                data: {
+                    username: userValue
+                },
+                onSuccess: handleUsernameResponse,
+                onFailure: handleError
+            };
 
-            var request = new HttpRequest(url, handleUsernameResponse);
-            request.send();
+            new Request.JSON(options).get();
+
+
         }
 
         function checkEmail() {
-            var emailValue = document.getElementById("email").value;
+            var emailValue = $("email").value;
 
             if (!emailValue) {
                 alert("Please enter an email address to check!");
                 return;
             }
 
-            var url = "ch14_formvalidator.php?email=" + emailValue;
+            var options = {
+                url: "ch14_formvalidator.php",
+                data: {
+                    email: emailValue
+                },
+                onSuccess: handleEmailResponse,
+                onFailure: handleError
+            };
 
-            var request = new HttpRequest(url, handleEmailResponse);
-            request.send();
+            new Request.JSON(options).get();
+
         }
 
-        function handleUsernameResponse(responseText) {
-            var response = JSON.parse(responseText);
-
+        function handleUsernameResponse(response) {
             if (!response.available) {
                 alert("The username " + response.searchTerm +
                         " is unavailable. Try another.");
@@ -108,9 +121,7 @@
             checkEmail();
         }
 
-        function handleEmailResponse(responseText) {
-            var response = JSON.parse(responseText);
-
+        function handleEmailResponse(response) {
             if (!response.available) {
                 alert("The email address " + response.searchTerm +
                         " is unavailable. Try another.");
@@ -120,8 +131,11 @@
             document.theForm.submit();
         }
 
-        document.getElementById("btnSubmit")
-                .addEventListener("click", btnSubmitClick);
+        function handleError() {
+            alert("A network error occurred. Please try again in a few moments.");
+        }
+
+        $("btnSubmit").addEvent("click", btnSubmitClick);
     </script>
 </body>
 

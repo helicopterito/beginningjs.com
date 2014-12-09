@@ -2,7 +2,7 @@
 
 <html lang="en">
 <head>
-    <title>Chapter 14: Question 2</title>
+    <title>Chapter 16: Question 2</title>
     <style>
         .fieldname {
             text-align: right;
@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <form name="theForm">
+    <form>
         <table>
             <tr>
                 <td class="fieldname">
@@ -23,7 +23,9 @@
                 <td>
                     <input type="text" id="username" />
                 </td>
-                <td></td>
+                <td>
+                    <a id="usernameAvailability" href="#">Check Availability</a>
+                </td>
             </tr>
             <tr>
                 <td class="fieldname">
@@ -32,7 +34,9 @@
                 <td>
                     <input type="text" id="email" />
                 </td>
-                <td></td>
+                <td>
+                    <a id="emailAvailability" href="#">Check Availability</a>
+                </td>
             </tr>
             <tr>
                 <td class="fieldname">
@@ -54,74 +58,64 @@
             </tr>
             <tr>
                 <td colspan="2" class="submit">
-                    <input id="btnSubmit" type="submit" value="Submit" />
+                    <input type="submit" value="Submit" />
                 </td>
                 <td />
             </tr>
         </table>
     </form>
-    <script src="ch14_question1.js"></script>
+    <script src="jquery-2.1.1.min.js"></script>
     <script>
-        function btnSubmitClick(e) {
+        function checkUsername(e) {
             e.preventDefault();
 
-            checkUsername();
-        }
-
-        function checkUsername() {
-            var userValue = document.getElementById("username").value;
+            var userValue = $("#username").val();
 
             if (!userValue) {
                 alert("Please enter a user name to check!");
                 return;
             }
 
-            var url = "ch14_formvalidator.php?username=" + userValue;
-
-            var request = new HttpRequest(url, handleUsernameResponse);
-            request.send();
+            makeRequest({
+                username: userValue
+            });
         }
 
-        function checkEmail() {
-            var emailValue = document.getElementById("email").value;
+        function checkEmail(e) {
+            e.preventDefault();
+
+            var emailValue = $("#email").val();
 
             if (!emailValue) {
                 alert("Please enter an email address to check!");
                 return;
             }
 
-            var url = "ch14_formvalidator.php?email=" + emailValue;
-
-            var request = new HttpRequest(url, handleEmailResponse);
-            request.send();
+            makeRequest({
+                email: emailValue
+            });
         }
 
-        function handleUsernameResponse(responseText) {
-            var response = JSON.parse(responseText);
+        function makeRequest(parameters) {
+            $.getJSON("ch14_formvalidator.php", parameters)
+                .done(handleResponse)
+                .fail(handleError);
+        }
 
-            if (!response.available) {
-                alert("The username " + response.searchTerm +
-                        " is unavailable. Try another.");
-                return;
+        function handleError() {
+            alert("A network error occurred. Please try again in a few moments.");
+        }
+
+        function handleResponse(response) {
+            if (response.available) {
+                alert(response.searchTerm + " is available!");
+            } else {
+                alert("We're sorry, but " + response.searchTerm + " is not available.");
             }
-
-            checkEmail();
         }
 
-        function handleEmailResponse(responseText) {
-            var response = JSON.parse(responseText);
-
-            if (!response.available) {
-                alert("The email address " + response.searchTerm +
-                        " is unavailable. Try another.");
-                return;
-            }
-
-            document.theForm.submit();
-        }
-
-        document.getElementById("btnSubmit")
-                .addEventListener("click", btnSubmitClick);
+        $("#usernameAvailability").on("click", checkUsername);
+        $("#emailAvailability").on("click", checkEmail);
     </script>
 </body>
 
